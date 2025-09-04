@@ -1,0 +1,53 @@
+name: Android Unit Tests
+
+on:
+    pull_request: # runs for ALL PRs on open/update/reopen
+        types: [ opened, synchronize, reopened, ready_for_review ]
+    workflow_dispatch:
+
+permissions:
+    contents: read
+
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
+
+jobs:
+    unit-tests:
+        runs-on: ubuntu-latest
+
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v4
+                with:
+                    fetch-depth: 0
+
+            # Validate the Gradle Wrapper
+            -   name: Gradle Wrapper Validation
+                uses: gradle/actions/wrapper-validation@v3
+
+            # Set up the JDK version 21
+            -   name: Set up JDK 21 (Temurin)
+                uses: actions/setup-java@v4
+                with:
+                    distribution: temurin
+                    java-version: '21'
+                    cache: gradle
+
+            # Configure Gradle + caching
+            -   name: Setup Gradle
+                uses: gradle/actions/setup-gradle@v3
+
+            # Run unit tests (JVM)
+            -   name: Run unit tests
+                run: ./gradlew test --stacktrace --no-daemon
+
+            # Collect HTML/JUnit reports
+            -   name: Upload test reports
+                if: always()
+                uses: actions/upload-artifact@v4
+                with:
+                    name: unit-test-reports
+                    path: |
+                        **/build/test-results/test/**/*
+                        **/build/reports/tests/test/**

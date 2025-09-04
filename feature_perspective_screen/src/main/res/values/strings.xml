@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="snackbar_no_apod">Keine Perspektive des Tages vorhanden</string>
+    <string name="apod_copyright">Urheberrecht: %1$s</string>
+</resources>

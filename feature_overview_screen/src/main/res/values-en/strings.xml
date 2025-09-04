@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="snackbar_thought_not_saved">Please enter the title AND your thought to save</string>
+</resources>

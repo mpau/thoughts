@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="overview_screen_title">Alle Gedanken</string>
+    <string name="overview_screen_button">Übersicht</string>
+    <string name="day_screen_title">Gedanken des Tages: %1$s</string>
+    <string name="day_screen_button">Tag</string>
+    <string name="new_thought_title">Titel</string>
+    <string name="new_thought_text">Gedanke</string>
+    <string name="new_thought_save">Gedanke speichern</string>
+    <string name="edit_thought_button">Bearbeiten</string>
+    <string name="add_thought_button">Hinzufügen</string>
+    <string name="delete_thought_button">Löschen</string>
+    <string name="perspective_screen_title">Perspektivwechsel</string>
+    <string name="perspective_screen_button">Perspektive</string>
+    <string name="perspective_image_description">Astronomiebild des Tages</string>
+    <string name="no_day_thoughts_hint">Keine Gedanken für diesen Tag vorhanden</string>
+    <string name="no_thoughts_hint">Füge deinen ersten Gedanken hinzu</string>
+</resources>

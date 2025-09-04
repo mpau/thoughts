@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="overview_screen_title">All thoughts</string>
+    <string name="overview_screen_button">Overview</string>
+    <string name="day_screen_title">Thoughts of the day: %1$s</string>
+    <string name="day_screen_button">Day</string>
+    <string name="new_thought_title">Title</string>
+    <string name="new_thought_text">Thought</string>
+    <string name="new_thought_save">Save thought</string>
+    <string name="edit_thought_button">Edit</string>
+    <string name="add_thought_button">Add</string>
+    <string name="delete_thought_button">Delete</string>
+    <string name="perspective_screen_title">Perspective change</string>
+    <string name="perspective_screen_button">Perspective</string>
+    <string name="perspective_image_description">Astronomy picture of the day</string>
+    <string name="no_day_thoughts_hint">No thoughts available for this day</string>
+    <string name="no_thoughts_hint">Add your first thought</string>
+</resources>

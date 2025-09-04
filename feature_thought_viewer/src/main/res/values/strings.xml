@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="snackbar_thought_not_updated">Bitte trage einen Titel UND deinen Gedanken ein</string>
+    <string name="thought_viewer_back_button">Zurück</string>
+    <string name="thought_viewer_header_title">Gedanke vom: %1$s</string>
+</resources>
