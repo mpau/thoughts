@@ -31,7 +31,7 @@ import com.mpauli.base.util.Procedure
 import com.mpauli.core.ui.components.AppAddThoughtFloatingActionButton
 import com.mpauli.core.ui.components.AppAddThoughtModalBottomSheet
 import com.mpauli.core.ui.components.AppBottomAppBar
-import com.mpauli.core.ui.components.AppNoThoughtsHint
+import com.mpauli.core.ui.components.AppNoContentHint
 import com.mpauli.core.ui.components.AppScaffoldSnackBar
 import com.mpauli.core.ui.components.AppThoughtCard
 import com.mpauli.core.ui.components.AppTopAppBar
@@ -120,7 +120,7 @@ private fun OverviewScreenStateless(
         }
     ) { innerPadding ->
         if (dateList.isEmpty()) {
-            AppNoThoughtsHint(
+            AppNoContentHint(
                 innerPadding = innerPadding,
                 mainScreenEnum = overviewMainScreenEnum
             )

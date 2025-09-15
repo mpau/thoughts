@@ -17,16 +17,20 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.mpauli.base.util.Action
 import com.mpauli.base.util.Actions.NoOp
 import com.mpauli.base.util.Procedure
 import com.mpauli.core.ui.components.AppBottomAppBar
-import com.mpauli.core.ui.components.AppNetworkImageWithShimmer
+import com.mpauli.core.ui.components.AppLoadingIndicator
+import com.mpauli.core.ui.components.AppNetworkImage
+import com.mpauli.core.ui.components.AppNoContentHint
 import com.mpauli.core.ui.components.AppScaffoldSnackBar
 import com.mpauli.core.ui.components.AppTopAppBar
 import com.mpauli.core.ui.components.MainScreenEnum
 import com.mpauli.core.ui.theme.AppTheme
+import com.mpauli.feature.perspectivescreen.R
 import com.mpauli.feature.perspectivescreen.viewmodel.PerspectiveScreenViewModel
 import com.mpauli.feature.perspectivescreen.viewmodel.model.ViewEffect
 import kotlinx.coroutines.flow.collectLatest
@@ -39,7 +43,7 @@ internal fun PerspectiveScreen(
     onNavigateToOverviewScreen: Action,
     onNavigateToDayScreen: Procedure<LocalDate>
 ) {
-    val item = perspectiveScreenViewModel.state.collectAsState().value
+    val viewState = perspectiveScreenViewModel.state.collectAsState().value
     val snackBarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(Unit) {
@@ -52,10 +56,12 @@ internal fun PerspectiveScreen(
 
     PerspectiveScreenStateless(
         modifier = Modifier.testTag(PerspectiveScreenTestTag.PerspectiveScreen.name),
-        imageUrl = item.apodItemState.hdUrl,
-        title = item.apodItemState.title,
-        explanation = item.apodItemState.explanation,
-        copyright = item.apodItemState.copyright,
+        isLoading = viewState.isLoading,
+        isError = viewState.isError,
+        imageUrl = viewState.apodItemState.hdUrl,
+        title = viewState.apodItemState.title,
+        explanation = viewState.apodItemState.explanation,
+        copyright = viewState.apodItemState.copyright,
         snackBarHostState = snackBarHostState,
         onOverviewScreenButtonClick = { onNavigateToOverviewScreen.invoke() },
         onDayScreenButtonClick = { onNavigateToDayScreen.invoke(LocalDate.now()) }
@@ -65,6 +71,8 @@ internal fun PerspectiveScreen(
 @Composable
 private fun PerspectiveScreenStateless(
     modifier: Modifier = Modifier,
+    isLoading: Boolean,
+    isError: Boolean,
     imageUrl: String,
     title: String,
     explanation: String,
@@ -84,6 +92,7 @@ private fun PerspectiveScreenStateless(
         topBar = {
             AppTopAppBar(
                 mainScreenEnum = perspectiveMainScreenEnum,
+                showInfoButton = !isError,
                 onInfoButtonClick = { showSheet = true }
             )
         },
@@ -99,12 +108,21 @@ private fun PerspectiveScreenStateless(
             AppScaffoldSnackBar(hostState = snackBarHostState)
         }
     ) { innerPadding ->
-        AppNetworkImageWithShimmer(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding),
-            imageUrl = imageUrl
-        )
+        when {
+            isLoading -> AppLoadingIndicator()
+            isError -> AppNoContentHint(
+                innerPadding = innerPadding,
+                mainScreenEnum = perspectiveMainScreenEnum
+            )
+
+            else -> AppNetworkImage(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding),
+                imageUrl = imageUrl,
+                contentDescription = stringResource(R.string.perspective_image_description)
+            )
+        }
 
         if (showSheet) {
             InfoModalBottomSheet(
@@ -123,7 +141,9 @@ private fun PerspectiveScreenPreview() {
     AppTheme {
         PerspectiveScreenStateless(
             snackBarHostState = remember { SnackbarHostState() },
-            imageUrl = "",
+            isLoading = false,
+            isError = false,
+            imageUrl = "https://www.something.com",
             title = "",
             explanation = "",
             copyright = "",

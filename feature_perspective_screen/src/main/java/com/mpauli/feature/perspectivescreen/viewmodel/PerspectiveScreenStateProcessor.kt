@@ -10,7 +10,23 @@ internal class PerspectiveScreenStateProcessor : MviStateProcessor<ViewState, Vi
 
     override suspend fun process(action: ViewAction): ViewState {
         val newState = when (action) {
-            is ViewAction.UpdateApod -> previousState.copy(action.apod)
+            is ViewAction.ShowLoading -> previousState.copy(
+                apodItemState = ViewState.DEFAULT.apodItemState,
+                isLoading = true,
+                isError = false
+            )
+
+            is ViewAction.ShowError -> previousState.copy(
+                apodItemState = ViewState.DEFAULT.apodItemState,
+                isLoading = false,
+                isError = true
+            )
+
+            is ViewAction.UpdateApod -> previousState.copy(
+                apodItemState = action.apod,
+                isLoading = false,
+                isError = false
+            )
         }
 
         previousState = newState

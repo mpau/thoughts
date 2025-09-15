@@ -18,7 +18,7 @@ import com.mpauli.core.ui.theme.AppTheme
 import com.mpauli.core.ui.util.add
 
 @Composable
-fun AppNoThoughtsHint(
+fun AppNoContentHint(
     modifier: Modifier = Modifier,
     innerPadding: PaddingValues,
     mainScreenEnum: MainScreenEnum
@@ -26,7 +26,7 @@ fun AppNoThoughtsHint(
     val noThoughtsText: Int? = when (mainScreenEnum) {
         MainScreenEnum.DayScreen -> R.string.no_day_thoughts_hint
         MainScreenEnum.OverviewScreen -> R.string.no_thoughts_hint
-        else -> null
+        MainScreenEnum.PerspectiveScreen -> R.string.no_perspective_hint
     }
     Box(
         modifier = modifier
@@ -55,7 +55,7 @@ fun AppNoThoughtsHint(
 @Composable
 private fun AppNoThoughtsHintPreview() {
     AppTheme {
-        AppNoThoughtsHint(
+        AppNoContentHint(
             innerPadding = PaddingValues(),
             mainScreenEnum = MainScreenEnum.OverviewScreen
         )

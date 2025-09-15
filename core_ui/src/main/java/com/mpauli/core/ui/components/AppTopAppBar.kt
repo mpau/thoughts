@@ -24,6 +24,7 @@ fun AppTopAppBar(
     modifier: Modifier = Modifier,
     mainScreenEnum: MainScreenEnum,
     date: String? = null,
+    showInfoButton: Boolean = false,
     onInfoButtonClick: Action? = null
 ) {
     TopAppBar(
@@ -47,7 +48,7 @@ fun AppTopAppBar(
             }
         },
         actions = {
-            if (mainScreenEnum == MainScreenEnum.PerspectiveScreen) {
+            if (mainScreenEnum == MainScreenEnum.PerspectiveScreen && showInfoButton) {
                 onInfoButtonClick?.let {
                     AppIconButton(
                         isActive = false,
@@ -70,6 +71,7 @@ private fun AppTopAppBarOverviewPreview(
         AppTopAppBar(
             mainScreenEnum = previewData.screen,
             date = previewData.date,
+            showInfoButton = previewData.showInfoButton,
             onInfoButtonClick = previewData.onInfoButtonClick
         )
     }
@@ -78,6 +80,7 @@ private fun AppTopAppBarOverviewPreview(
 private data class PreviewData(
     val date: String?,
     val screen: MainScreenEnum,
+    val showInfoButton: Boolean,
     val onInfoButtonClick: Action?
 )
 
@@ -86,16 +89,19 @@ private class PreviewDataProvider : PreviewParameterProvider<PreviewData> {
         PreviewData(
             date = null,
             screen = MainScreenEnum.OverviewScreen,
+            showInfoButton = false,
             onInfoButtonClick = null
         ),
         PreviewData(
             date = "05.08.2025",
             screen = MainScreenEnum.DayScreen,
+            showInfoButton = false,
             onInfoButtonClick = null
         ),
         PreviewData(
             date = null,
             screen = MainScreenEnum.PerspectiveScreen,
+            showInfoButton = true,
             onInfoButtonClick = NoOp
         )
     )

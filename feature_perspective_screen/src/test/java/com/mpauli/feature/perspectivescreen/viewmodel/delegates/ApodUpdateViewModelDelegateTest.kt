@@ -1,5 +1,6 @@
 package com.mpauli.feature.perspectivescreen.viewmodel.delegates
 
+import android.accounts.NetworkErrorException
 import com.mpauli.base.res.ResourceProvider
 import com.mpauli.core.app.apod.domain.usecase.GetApodUseCase
 import com.mpauli.core.models.Apod
@@ -18,8 +19,10 @@ import kotlinx.coroutines.test.runTest
 import org.amshove.kluent.shouldBeEqualTo
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import java.time.LocalDate
@@ -36,6 +39,8 @@ internal class ApodUpdateViewModelDelegateTest {
     private val actionProcessor: MviActionProcessor<ViewAction> = mock()
     private val effectProcessor: MutableSharedFlow<ViewEffect> = MutableSharedFlow(replay = 1)
     private val coroutineScope = TestScope
+
+    private val captorEvent = argumentCaptor<ViewAction>()
 
     private val apod = Apod(
         copyright = "Panther Observatory",
@@ -59,7 +64,20 @@ internal class ApodUpdateViewModelDelegateTest {
     }
 
     @Test
-    fun `should handle ViewEvent#ApodUpdateTriggered event`() = runTest {
+    fun `should process ViewAction#ShowLoading`() = runTest {
+        // Given
+        whenever(getApodUseCase.run()) doReturn Result.success(apod)
+
+        // When
+        apodUpdateViewModelDelegate.onApodUpdateTriggered(ViewEvent.ApodUpdateTriggered)
+
+        // Then
+        verify(actionProcessor, times(2)).process(captorEvent.capture())
+        captorEvent.firstValue shouldBeEqualTo ViewAction.ShowLoading
+    }
+
+    @Test
+    fun `should process ViewAction#ApodUpdateTriggered`() = runTest {
         // Given
         whenever(getApodUseCase.run()) doReturn Result.success(apod)
 
@@ -68,7 +86,36 @@ internal class ApodUpdateViewModelDelegateTest {
 
         // Then
         val apodItemState = apod.toItemState()
-        verify(actionProcessor).process(ViewAction.UpdateApod(apodItemState))
+        verify(actionProcessor, times(2)).process(captorEvent.capture())
+        captorEvent.secondValue shouldBeEqualTo ViewAction.UpdateApod(apodItemState)
+    }
+
+    @Test
+    fun `should process ViewAction#ShowError when url string is blank`() = runTest {
+        // Given
+        whenever(getApodUseCase.run()) doReturn Result.success(apod.copy(url = " "))
+
+        // When
+        apodUpdateViewModelDelegate.onApodUpdateTriggered(ViewEvent.ApodUpdateTriggered)
+
+        // Then
+        verify(actionProcessor, times(2)).process(captorEvent.capture())
+        captorEvent.secondValue shouldBeEqualTo ViewAction.ShowError
+    }
+
+    @Test
+    fun `should process ViewAction#ShowError with network error`() = runTest {
+        // Given
+        val messageText = "No apod at all"
+        whenever(resourceProvider.getString(R.string.snackbar_no_apod)) doReturn messageText
+        whenever(getApodUseCase.run()) doReturn Result.failure(NetworkErrorException())
+
+        // When
+        apodUpdateViewModelDelegate.onApodUpdateTriggered(ViewEvent.ApodUpdateTriggered)
+
+        // Then
+        verify(actionProcessor, times(2)).process(captorEvent.capture())
+        captorEvent.secondValue shouldBeEqualTo ViewAction.ShowError
     }
 
     @Test
