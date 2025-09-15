@@ -23,7 +23,7 @@ import com.mpauli.base.util.Actions.NoOp
 import com.mpauli.base.util.Procedure
 import com.mpauli.core.ui.components.AppBottomAppBar
 import com.mpauli.core.ui.components.AppLoadingIndicator
-import com.mpauli.core.ui.components.AppNetworkImageWithShimmer
+import com.mpauli.core.ui.components.AppNetworkImage
 import com.mpauli.core.ui.components.AppNoContentHint
 import com.mpauli.core.ui.components.AppScaffoldSnackBar
 import com.mpauli.core.ui.components.AppTopAppBar
@@ -113,7 +113,7 @@ private fun PerspectiveScreenStateless(
                 mainScreenEnum = perspectiveMainScreenEnum
             )
 
-            else -> AppNetworkImageWithShimmer(
+            else -> AppNetworkImage(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(innerPadding),
