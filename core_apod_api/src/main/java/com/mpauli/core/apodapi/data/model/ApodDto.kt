@@ -22,18 +22,18 @@ internal data class ApodDto(
     @SerialName("title")
     val title: String,
     @SerialName("url")
-    val url: String
+    val url: String?
 )
 
 internal fun ApodDto.toDomain(): Apod = Apod(
     copyright = copyright.orEmpty().trim(),
     date = LocalDate.parse(date),
     explanation = explanation.replace(MULTI_SPACE, " "),
-    hdUrl = hdUrl ?: url,
+    hdUrl = hdUrl ?: url.orEmpty(),
     mediaType = mediaType,
     serviceVersion = serviceVersion,
     title = title,
-    url = url
+    url = url.orEmpty()
 )
 
 private val MULTI_SPACE = Regex(" {2,}")
