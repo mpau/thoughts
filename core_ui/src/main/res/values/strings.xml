@@ -15,5 +15,5 @@
     <string name="perspective_image_description">Astronomiebild des Tages</string>
     <string name="no_day_thoughts_hint">Keine Gedanken für diesen Tag vorhanden</string>
     <string name="no_thoughts_hint">Füge deinen ersten Gedanken hinzu</string>
-    <string name="no_perspective_hint">Sorry, keine Perspektive für den Tag vorhanden</string>
+    <string name="no_perspective_hint">Sorry, keine neue Perspektive für den Tag vorhanden</string>
 </resources>
