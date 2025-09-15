@@ -37,7 +37,9 @@ internal class ApodUpdateViewModelDelegate(
                 onSuccess = { apod ->
                     Timber.d("Update the apod")
 
-                    if (apod.url.isBlank()) {
+                    val isApodNotAnImage = apod.mediaType != "image" || apod.url.isBlank()
+
+                    if (isApodNotAnImage) {
                         process(ViewAction.ShowError)
                     } else {
                         process(ViewAction.UpdateApod(apod.toItemState()))
