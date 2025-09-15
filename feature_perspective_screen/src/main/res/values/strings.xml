@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="snackbar_no_apod">Keine Perspektive des Tages vorhanden</string>
+    <string name="snackbar_no_apod">Ups, es gab einen Netzwerk Fehler</string>
     <string name="apod_copyright">Urheberrecht: %1$s</string>
 </resources>

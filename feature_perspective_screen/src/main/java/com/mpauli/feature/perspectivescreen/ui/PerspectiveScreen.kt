@@ -23,6 +23,7 @@ import com.mpauli.base.util.Actions.NoOp
 import com.mpauli.base.util.Procedure
 import com.mpauli.core.ui.components.AppBottomAppBar
 import com.mpauli.core.ui.components.AppNetworkImageWithShimmer
+import com.mpauli.core.ui.components.AppNoContentHint
 import com.mpauli.core.ui.components.AppScaffoldSnackBar
 import com.mpauli.core.ui.components.AppTopAppBar
 import com.mpauli.core.ui.components.MainScreenEnum
@@ -102,12 +103,19 @@ private fun PerspectiveScreenStateless(
             AppScaffoldSnackBar(hostState = snackBarHostState)
         }
     ) { innerPadding ->
-        AppNetworkImageWithShimmer(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding),
-            imageUrl = imageUrl
-        )
+        if (imageUrl.isBlank()) {
+            AppNoContentHint(
+                innerPadding = innerPadding,
+                mainScreenEnum = perspectiveMainScreenEnum
+            )
+        } else {
+            AppNetworkImageWithShimmer(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding),
+                imageUrl = imageUrl
+            )
+        }
 
         if (showSheet) {
             InfoModalBottomSheet(
@@ -127,7 +135,7 @@ private fun PerspectiveScreenPreview() {
         PerspectiveScreenStateless(
             snackBarHostState = remember { SnackbarHostState() },
             showInfoButton = true,
-            imageUrl = "",
+            imageUrl = "https://www.something.com",
             title = "",
             explanation = "",
             copyright = "",
