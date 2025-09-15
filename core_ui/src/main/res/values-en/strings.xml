@@ -12,7 +12,6 @@
     <string name="delete_thought_button">Delete</string>
     <string name="perspective_screen_title">Perspective change</string>
     <string name="perspective_screen_button">Perspective</string>
-    <string name="perspective_image_description">Astronomy picture of the day</string>
     <string name="no_day_thoughts_hint">No thoughts available for this day</string>
     <string name="no_thoughts_hint">Add your first thought</string>
     <string name="no_perspective_hint">Sorry, no new perspective for the day available</string>

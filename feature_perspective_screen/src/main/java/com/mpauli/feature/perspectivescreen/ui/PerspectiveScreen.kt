@@ -17,6 +17,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.mpauli.base.util.Action
 import com.mpauli.base.util.Actions.NoOp
@@ -29,6 +30,7 @@ import com.mpauli.core.ui.components.AppScaffoldSnackBar
 import com.mpauli.core.ui.components.AppTopAppBar
 import com.mpauli.core.ui.components.MainScreenEnum
 import com.mpauli.core.ui.theme.AppTheme
+import com.mpauli.feature.perspectivescreen.R
 import com.mpauli.feature.perspectivescreen.viewmodel.PerspectiveScreenViewModel
 import com.mpauli.feature.perspectivescreen.viewmodel.model.ViewEffect
 import kotlinx.coroutines.flow.collectLatest
@@ -117,7 +119,8 @@ private fun PerspectiveScreenStateless(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(innerPadding),
-                imageUrl = imageUrl
+                imageUrl = imageUrl,
+                contentDescription = stringResource(R.string.perspective_image_description)
             )
         }
 
