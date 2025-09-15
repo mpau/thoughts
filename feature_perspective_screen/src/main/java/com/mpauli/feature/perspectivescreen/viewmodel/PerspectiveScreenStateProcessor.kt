@@ -13,19 +13,19 @@ internal class PerspectiveScreenStateProcessor : MviStateProcessor<ViewState, Vi
             is ViewAction.ShowLoading -> previousState.copy(
                 apodItemState = ViewState.DEFAULT.apodItemState,
                 isLoading = true,
-                showInfoButton = false
+                isError = false
             )
 
             is ViewAction.ShowError -> previousState.copy(
                 apodItemState = ViewState.DEFAULT.apodItemState,
                 isLoading = false,
-                showInfoButton = false
+                isError = true
             )
 
             is ViewAction.UpdateApod -> previousState.copy(
                 apodItemState = action.apod,
                 isLoading = false,
-                showInfoButton = true
+                isError = true
             )
         }
 

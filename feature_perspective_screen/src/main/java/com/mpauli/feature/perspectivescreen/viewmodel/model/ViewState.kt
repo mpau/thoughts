@@ -6,7 +6,7 @@ import java.time.LocalDate
 internal data class ViewState(
     val apodItemState: ApodItemState,
     val isLoading: Boolean,
-    val showInfoButton: Boolean
+    val isError: Boolean
 ) {
 
     companion object {
@@ -21,7 +21,7 @@ internal data class ViewState(
                 url = ""
             ),
             isLoading = true,
-            showInfoButton = false
+            isError = false
         )
     }
 }

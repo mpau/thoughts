@@ -22,6 +22,7 @@ import com.mpauli.base.util.Action
 import com.mpauli.base.util.Actions.NoOp
 import com.mpauli.base.util.Procedure
 import com.mpauli.core.ui.components.AppBottomAppBar
+import com.mpauli.core.ui.components.AppLoadingIndicator
 import com.mpauli.core.ui.components.AppNetworkImageWithShimmer
 import com.mpauli.core.ui.components.AppNoContentHint
 import com.mpauli.core.ui.components.AppScaffoldSnackBar
@@ -40,7 +41,7 @@ internal fun PerspectiveScreen(
     onNavigateToOverviewScreen: Action,
     onNavigateToDayScreen: Procedure<LocalDate>
 ) {
-    val item = perspectiveScreenViewModel.state.collectAsState().value
+    val viewState = perspectiveScreenViewModel.state.collectAsState().value
     val snackBarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(Unit) {
@@ -53,11 +54,12 @@ internal fun PerspectiveScreen(
 
     PerspectiveScreenStateless(
         modifier = Modifier.testTag(PerspectiveScreenTestTag.PerspectiveScreen.name),
-        showInfoButton = item.showInfoButton,
-        imageUrl = item.apodItemState.hdUrl,
-        title = item.apodItemState.title,
-        explanation = item.apodItemState.explanation,
-        copyright = item.apodItemState.copyright,
+        isLoading = viewState.isLoading,
+        isError = viewState.isError,
+        imageUrl = viewState.apodItemState.hdUrl,
+        title = viewState.apodItemState.title,
+        explanation = viewState.apodItemState.explanation,
+        copyright = viewState.apodItemState.copyright,
         snackBarHostState = snackBarHostState,
         onOverviewScreenButtonClick = { onNavigateToOverviewScreen.invoke() },
         onDayScreenButtonClick = { onNavigateToDayScreen.invoke(LocalDate.now()) }
@@ -67,7 +69,8 @@ internal fun PerspectiveScreen(
 @Composable
 private fun PerspectiveScreenStateless(
     modifier: Modifier = Modifier,
-    showInfoButton: Boolean,
+    isLoading: Boolean,
+    isError: Boolean,
     imageUrl: String,
     title: String,
     explanation: String,
@@ -87,7 +90,7 @@ private fun PerspectiveScreenStateless(
         topBar = {
             AppTopAppBar(
                 mainScreenEnum = perspectiveMainScreenEnum,
-                showInfoButton = showInfoButton,
+                showInfoButton = !isError,
                 onInfoButtonClick = { showSheet = true }
             )
         },
@@ -103,13 +106,14 @@ private fun PerspectiveScreenStateless(
             AppScaffoldSnackBar(hostState = snackBarHostState)
         }
     ) { innerPadding ->
-        if (imageUrl.isBlank()) {
-            AppNoContentHint(
+        when {
+            isLoading -> AppLoadingIndicator()
+            isError -> AppNoContentHint(
                 innerPadding = innerPadding,
                 mainScreenEnum = perspectiveMainScreenEnum
             )
-        } else {
-            AppNetworkImageWithShimmer(
+
+            else -> AppNetworkImageWithShimmer(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(innerPadding),
@@ -134,7 +138,8 @@ private fun PerspectiveScreenPreview() {
     AppTheme {
         PerspectiveScreenStateless(
             snackBarHostState = remember { SnackbarHostState() },
-            showInfoButton = true,
+            isLoading = false,
+            isError = false,
             imageUrl = "https://www.something.com",
             title = "",
             explanation = "",

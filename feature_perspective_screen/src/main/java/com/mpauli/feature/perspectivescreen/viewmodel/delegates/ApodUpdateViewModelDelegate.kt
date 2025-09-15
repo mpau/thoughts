@@ -31,11 +31,17 @@ internal class ApodUpdateViewModelDelegate(
         lifecycleScope.launch {
             Timber.d("Get apod of the day")
 
+            process(ViewAction.ShowLoading)
+
             getApodUseCase.run().fold(
                 onSuccess = { apod ->
                     Timber.d("Update the apod")
 
-                    process(ViewAction.UpdateApod(apod.toItemState()))
+                    if (apod.url.isBlank()) {
+                        process(ViewAction.ShowError)
+                    } else {
+                        process(ViewAction.UpdateApod(apod.toItemState()))
+                    }
                 },
                 onFailure = {
                     Timber.d("No apod available")
