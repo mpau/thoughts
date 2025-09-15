@@ -23,7 +23,7 @@ import com.mpauli.base.util.Action
 import com.mpauli.base.util.Actions.NoOp
 import com.mpauli.base.util.Procedure
 import com.mpauli.core.ui.components.AppBottomAppBar
-import com.mpauli.core.ui.components.AppNoThoughtsHint
+import com.mpauli.core.ui.components.AppNoContentHint
 import com.mpauli.core.ui.components.AppThoughtCard
 import com.mpauli.core.ui.components.AppTopAppBar
 import com.mpauli.core.ui.components.MainScreenEnum
@@ -89,7 +89,7 @@ private fun DayScreenStateless(
         }
     ) { innerPadding ->
         if (items.isEmpty()) {
-            AppNoThoughtsHint(
+            AppNoContentHint(
                 innerPadding = innerPadding,
                 mainScreenEnum = dayMainScreenEnum
             )
