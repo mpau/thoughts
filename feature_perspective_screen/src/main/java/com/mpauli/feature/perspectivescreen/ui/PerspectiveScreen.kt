@@ -52,6 +52,7 @@ internal fun PerspectiveScreen(
 
     PerspectiveScreenStateless(
         modifier = Modifier.testTag(PerspectiveScreenTestTag.PerspectiveScreen.name),
+        showInfoButton = item.showInfoButton,
         imageUrl = item.apodItemState.hdUrl,
         title = item.apodItemState.title,
         explanation = item.apodItemState.explanation,
@@ -65,6 +66,7 @@ internal fun PerspectiveScreen(
 @Composable
 private fun PerspectiveScreenStateless(
     modifier: Modifier = Modifier,
+    showInfoButton: Boolean,
     imageUrl: String,
     title: String,
     explanation: String,
@@ -84,6 +86,7 @@ private fun PerspectiveScreenStateless(
         topBar = {
             AppTopAppBar(
                 mainScreenEnum = perspectiveMainScreenEnum,
+                showInfoButton = showInfoButton,
                 onInfoButtonClick = { showSheet = true }
             )
         },
@@ -123,6 +126,7 @@ private fun PerspectiveScreenPreview() {
     AppTheme {
         PerspectiveScreenStateless(
             snackBarHostState = remember { SnackbarHostState() },
+            showInfoButton = true,
             imageUrl = "",
             title = "",
             explanation = "",

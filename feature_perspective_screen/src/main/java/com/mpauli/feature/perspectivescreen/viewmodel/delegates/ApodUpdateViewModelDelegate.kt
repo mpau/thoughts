@@ -48,6 +48,8 @@ internal class ApodUpdateViewModelDelegate(
                             )
                         )
                     )
+
+                    process(ViewAction.ShowError)
                 }
             )
         }
